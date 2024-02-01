@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="inner" data-aos="zoom-in">
+            <div class="box">
+                <p class="number">
+                    <img src="images/logo.png" alt="tweetMe" title="Tweet" id="tweet">
+                </p>
+                <div class="text">
+                    <i class="start-quote fas fa-quote-left"></i>
+                    <p id="quotes" class="quote"></p>
+                    <p id="author" class="author"></p>
+                </div>
+
+                <label for="" class="button">
+                    <p id="newQ" onclick="location.reload()">New Quote</p>
+                </label>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+        const quotes = document.getElementById("quotes");
+        const author = document.getElementById("author");
+        const tweet = document.getElementById("tweet");
+
+        let realData = "";
+        let quotesData = "";
+
+        const tweetNow = () => {
+            let tweetPost = `https://twitter.com/intent/tweet?text=${quotesData.content}`;
+            window.open(tweetPost);
+        }
+
+        const getNewQuotes = () => {
+            quotesData = realData
+            quotes.innerText = `${quotesData.content}`;
+            author.innerText = `${quotesData.author}`;
+        }
+        const getQuotes = async () => {
+
+            const api = "https://api.quotable.io/random";
+            try {
+                let data = await fetch(api);
+                realData = await data.json();
+                getNewQuotes();
+            } catch (error) { }
+        };
+
+        tweet.addEventListener("click", tweetNow);
+
+        getQuotes();
+    </script>
+</body>
+
+</html>
